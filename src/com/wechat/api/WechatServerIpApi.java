@@ -18,8 +18,8 @@ package com.wechat.api;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.json.JsonObject;
 import com.wechat.util.http.ApiRequest;
+import com.wechat.util.json.JsonObject;
 
 
 /**

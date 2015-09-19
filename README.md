@@ -8,18 +8,16 @@ A powerful SDK for WeChat platform.
 
 1. Zero dependency.
 
-1. All APIs supported.
+1. Easy-expanding API.
 
-1. Zero configuration.
+1. Third-part platform supported.
 
-1. Multiple message handlers supported.
-
-#零依赖——微信全功能急速开发SDK框架
+#微信全功能急速开发SDK框架
 
 - 特性
 
-1. 零配置文件
+1. 零依赖
 
-1. API全功能引导
+1. 易拓展API
 
-1. 多消息处理器
+1. 支持第三方平台

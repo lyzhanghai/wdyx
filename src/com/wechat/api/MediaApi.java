@@ -19,10 +19,10 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.json.JsonObject;
-import com.json.JsonParser;
 import com.wechat.util.http.ApiRequest;
 import com.wechat.util.http.MultipartFormUploadRequest;
+import com.wechat.util.json.JsonObject;
+import com.wechat.util.json.JsonParser;
 
 public class MediaApi {
 

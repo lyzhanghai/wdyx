@@ -15,9 +15,9 @@
  */
 package com.wechat.api;
 
-import com.json.JsonObject;
 import com.wechat.access.AccessToken;
 import com.wechat.util.http.ApiRequest;
+import com.wechat.util.json.JsonObject;
 
 /**
  * 全局属性：AccessToken的获取API

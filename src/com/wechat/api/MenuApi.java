@@ -15,8 +15,8 @@
  */
 package com.wechat.api;
 
-import com.json.JsonObject;
 import com.wechat.util.http.ApiRequest;
+import com.wechat.util.json.JsonObject;
 
 /**
  * 自定义菜单相关API

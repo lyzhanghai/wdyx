@@ -17,8 +17,8 @@ package com.wechat.util.http;
 
 import java.io.File;
 
-import com.json.JsonObject;
-import com.json.JsonParser;
+import com.wechat.util.json.JsonObject;
+import com.wechat.util.json.JsonParser;
 
 /**
  * ApiRequest
