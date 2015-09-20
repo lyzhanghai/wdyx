@@ -15,8 +15,8 @@
  */
 package com.wechat.api;
 
+import com.json.JsonObject;
 import com.wechat.util.http.ApiRequest;
-import com.wechat.util.json.JsonObject;
 
 /**
  * 用户管理API
@@ -33,22 +33,22 @@ public class UserMgrApi {
 	public JsonObject setUserRemark(String accessToken,String openid,String remark) {
 		String url = SET_USER_REMARK_URL.replace("ACCESS_TOKEN", accessToken);
 		String out = "{\"openid\":\""+openid+"\",\"remark\":\""+remark+"\"}";
-		return new ApiRequest(url).setOutData(out.getBytes()).doPost().getResourceAsJsonObject();
+		return new ApiRequest(url).setOutData(out.getBytes()).doPost().optJsonObject();
 	}
 	
 	public static JsonObject getUserInfo(String accessToken,String openid) {
 		String url = GET_USER_INFO_URL.replace("ACCESS_TOKEN", accessToken).replace("OPENID", openid);
-		return new ApiRequest(url).doGet().getResourceAsJsonObject();
+		return new ApiRequest(url).doGet().optJsonObject();
 	}
 
 	public static JsonObject sendMsgToUser(String accessToken,String openid,String msg) {
 		String url = SEND_MSG_TO_USER_URL.replace("ACCESS_TOKEN", accessToken);
 		String out = "{\"touser\":\""+openid+"\",\"msgtype\":\"text\",\"text\":{\"content\":\""+msg+"\"}}";
-		return new ApiRequest(url).setOutData(out.getBytes()).doPost().getResourceAsJsonObject();
+		return new ApiRequest(url).setOutData(out.getBytes()).doPost().optJsonObject();
 	}
 	
 	public static JsonObject getUserList(String accessToken,String nextOpenid){
 		String url = GET_USER_LIST_URL.replace("ACCESS_TOKEN", accessToken).replace("NEXT_OPENID", nextOpenid==null?"":nextOpenid);
-		return new ApiRequest(url).doGet().getResourceAsJsonObject();
+		return new ApiRequest(url).doGet().optJsonObject();
 	}
 }

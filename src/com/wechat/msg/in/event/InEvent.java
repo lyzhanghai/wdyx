@@ -2,7 +2,7 @@ package com.wechat.msg.in.event;
 
 import java.util.Map;
 
-import com.wechat.msg.InMsg;
+import com.wechat.msg.in.InMsg;
 
 public class InEvent extends InMsg {
 

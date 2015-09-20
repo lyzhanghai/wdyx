@@ -1,4 +1,4 @@
-package com.wechat.msg;
+package com.wechat.msg.in;
 
 import java.util.Map;
 

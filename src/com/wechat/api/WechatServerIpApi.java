@@ -18,8 +18,8 @@ package com.wechat.api;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.json.JsonObject;
 import com.wechat.util.http.ApiRequest;
-import com.wechat.util.json.JsonObject;
 
 
 /**
@@ -42,7 +42,7 @@ public class WechatServerIpApi {
 	 */
 	public static List<String> getWechatServerIpList(String accessToken) {
 		String url = URL.replace("ACCESS_TOKEN", accessToken);
-		JsonObject jsonObject = new ApiRequest(url).doGet().getResourceAsJsonObject();
+		JsonObject jsonObject = new ApiRequest(url).doGet().optJsonObject();
 		List<String> ipList = new ArrayList<String>();
 		jsonObject.getJsonArray("ip_list").toList(ipList);
 		return ipList;

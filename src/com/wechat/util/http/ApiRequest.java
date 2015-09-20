@@ -17,8 +17,9 @@ package com.wechat.util.http;
 
 import java.io.File;
 
-import com.wechat.util.json.JsonObject;
-import com.wechat.util.json.JsonParser;
+import com.json.JsonObject;
+import com.json.JsonParser;
+
 
 /**
  * ApiRequest
@@ -56,40 +57,40 @@ public class ApiRequest extends HttpsRequest {
 		return this;
 	}
 	
-	public JsonObject getResourceAsJsonObject() {
+	public JsonObject optJsonObject() {
 		try {
 			String s = getResponseAsString();
 			return JsonParser.parseJsonObject(s);
 		} catch (Exception e) {
 			close();
 			e.printStackTrace();
-			throw new RuntimeException(e);
+			return null;
 		}
 	}
 	
-	public String getResourceAsString() {
+	public String optString() {
 		try {
 			return getResponseAsString();
 		} catch (Exception e) {
 			close();
 			e.printStackTrace();
-			throw new RuntimeException(e);
+			return null;
 		}
 		
 	}
 	
-	public byte[] getResourceAsBytes() {
+	public byte[] optBytes() {
 		try {
 			return getResponseAsByteArray();
 		} catch (Exception e) {
 			close();
 			e.printStackTrace();
-			throw new RuntimeException(e);
+			return null;
 		}
 		
 	}
 	
-	public boolean getResourceAsFile(File dest) {
+	public boolean optFile(File dest) {
 		try {
 			return downloadFile(dest);
 		} catch (Exception e) {
@@ -98,4 +99,5 @@ public class ApiRequest extends HttpsRequest {
 			return false;
 		}
 	}
+
 }

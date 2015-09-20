@@ -19,10 +19,10 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.json.JsonObject;
+import com.json.JsonParser;
 import com.wechat.util.http.ApiRequest;
 import com.wechat.util.http.MultipartFormUploadRequest;
-import com.wechat.util.json.JsonObject;
-import com.wechat.util.json.JsonParser;
 
 public class MediaApi {
 
@@ -95,57 +95,57 @@ public class MediaApi {
 	 */
 	public static byte[] getTempMaterial(String accessToken,String mediaId) {
 		String url = GET_TEMP_MATERIAL_URL.replace("ACCESS_TOKEN", accessToken).replace("MEDIA_ID", mediaId);
-		return new ApiRequest(url).doPost().getResourceAsBytes();
+		return new ApiRequest(url).doPost().optBytes();
 	}
 	
 	public static boolean getTempImage(String accessToken,String mediaId,File dest) {
 		String url = GET_TEMP_MATERIAL_URL.replace("ACCESS_TOKEN", accessToken).replace("MEDIA_ID", mediaId);
-		return new ApiRequest(url).doPost().getResourceAsFile(dest);
+		return new ApiRequest(url).doPost().optFile(dest);
 	}
 	
 	public static JsonObject addPermanetNews(String accessToken,String jsonNews) {
 		String url = ADD_PERMANENT_NEWS_URL.replace("ACCESS_TOKEN", accessToken);
-		return new ApiRequest(url).setOutData(jsonNews.getBytes()).doPost().getResourceAsJsonObject();
+		return new ApiRequest(url).setOutData(jsonNews.getBytes()).doPost().optJsonObject();
 	}
 	
 	public static byte[] getPermanetMaterial(String accessToken,String mediaId) {
 		String url = GET_PERMANENT_MATERIAL_URL.replace("ACCESS_TOKEN", accessToken);
 		String out = "{\"media_id\":"+"\""+mediaId+"\"}";
-		return new ApiRequest(url).setOutData(out.getBytes()).doPost().getResourceAsBytes();
+		return new ApiRequest(url).setOutData(out.getBytes()).doPost().optBytes();
 	}
 	
 	public static JsonObject getPermanetNews(String accessToken,String mediaId) {
 		String url = GET_PERMANENT_MATERIAL_URL.replace("ACCESS_TOKEN", accessToken);
 		String out = "{\"media_id\":"+"\""+mediaId+"\"}";
-		return new ApiRequest(url).setOutData(out.getBytes()).doPost().getResourceAsJsonObject();
+		return new ApiRequest(url).setOutData(out.getBytes()).doPost().optJsonObject();
 	}
 	
 	public static JsonObject getPermanetVideo(String accessToken,String mediaId) {
 		String url = GET_PERMANENT_MATERIAL_URL.replace("ACCESS_TOKEN", accessToken);
 		String out = "{\"media_id\":"+"\""+mediaId+"\"}";
-		return new ApiRequest(url).setOutData(out.getBytes()).doPost().getResourceAsJsonObject();
+		return new ApiRequest(url).setOutData(out.getBytes()).doPost().optJsonObject();
 	}
 	
 	public static JsonObject deletePermanentMaterial(String accessToken,String mediaId) {
 		String url = DELETE_PERMANENT_MATERIAL_URL.replace("ACCESS_TOKEN", accessToken);
 		String out = "{\"media_id\":"+"\""+mediaId+"\"}";
-		return new ApiRequest(url).setOutData(out.getBytes()).doPost().getResourceAsJsonObject();
+		return new ApiRequest(url).setOutData(out.getBytes()).doPost().optJsonObject();
 	}
 	
 	public static JsonObject updateNews(String accessToken,String jsonUpdateNews) {
 		String url = UPDATE_NEWS_URL.replace("ACCESS_TOKEN", accessToken);
-		return new ApiRequest(url).setOutData(jsonUpdateNews.getBytes()).doPost().getResourceAsJsonObject();
+		return new ApiRequest(url).setOutData(jsonUpdateNews.getBytes()).doPost().optJsonObject();
 	}
 	
 	public static JsonObject getMaterialCount(String accessToken) {
 		String url = GET_MATERIAL_COUNT_URL.replace("ACCESS_TOKEN", accessToken);
-		return new ApiRequest(url).doGet().getResourceAsJsonObject();
+		return new ApiRequest(url).doGet().optJsonObject();
 	}
 	
 	public static JsonObject getBatchMaterial(String accessToken,String type,int offset,int count) {
 		String url = GET_BATCH_MATERIAL_URL.replace("ACCESS_TOKEN", accessToken);
 		String out = "\"type\":\""+type+"\",\"offset\":\""+offset+"\",\"count\":\""+count+"\"";
-		return new ApiRequest(url).setOutData(out.getBytes()).doPost().getResourceAsJsonObject();
+		return new ApiRequest(url).setOutData(out.getBytes()).doPost().optJsonObject();
 	}
 	
 	public static void main(String[] args) {

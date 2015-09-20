@@ -26,38 +26,22 @@ import com.wechat.util.SignUtil;
 
 
 /**
- * WechatApi
+ * WeChat API.
  * @author 帮杰
  *
  */
-public abstract class WechatApi {
+public abstract class Api {
 
-	private WechatApiConfig wechatApiConfig = new WechatApiConfig();
-	private WechatHandler wechatHandler = new WechatHandler();
-	
-	public WechatApi() {
-		configWechatApi(wechatApiConfig);
-		configWechatHandler(wechatHandler);
-	}
-
-	protected abstract void configWechatApi(WechatApiConfig wechatApiConfig);
-	protected abstract void configWechatHandler(WechatHandler wechatHandler);
-	
-	public WechatApiConfig getWechatApiConfig() {
-		return wechatApiConfig;
-	}
-
-	public WechatHandler getWechatRequestHandler() {
-		return wechatHandler;
+	public Api() {
 	}
 
 	public void doHandshake(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		response.setContentType("text/xml");
 		String signature = request.getParameter("signature");
 		String timestamp = request.getParameter("timestamp");
 		String nonce = request.getParameter("nonce");
 		String echostr = request.getParameter("echostr");
-		if(SignUtil.checkSignature(wechatApiConfig.getToken(),signature, timestamp, nonce)){
+		if(SignUtil.checkSignature(getConfig().getToken(),signature, timestamp, nonce)){
+			response.setContentType("text/xml");
 			PrintWriter out = response.getWriter();
 			out.write(echostr);
 			out.flush();
@@ -67,8 +51,10 @@ public abstract class WechatApi {
 	}
 	
 	public void doService(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		response.setContentType("text/xml");
-		ServiceContext serviceContext = new ServiceContext(this, request, response);
-		wechatHandler.handle(serviceContext);
+		ServiceContext serviceContext = new ServiceContext(getConfig(), request, response);
+		getHandler().handle(serviceContext);
 	}
+	
+	protected abstract Config getConfig();
+	protected abstract Handler getHandler();
 }

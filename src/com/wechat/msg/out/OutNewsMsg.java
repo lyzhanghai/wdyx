@@ -3,8 +3,7 @@ package com.wechat.msg.out;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.wechat.msg.InMsg;
-import com.wechat.msg.OutMsg;
+import com.wechat.msg.in.InMsg;
 
 /**
 	回复图文消息

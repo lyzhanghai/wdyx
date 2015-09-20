@@ -20,7 +20,12 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Properties;
 
-public class WechatApiConfig {
+/**
+ * WeChat API configuration.
+ * @author 帮杰
+ *
+ */
+public class Config {
 
 	private String token;
 	private String appId;
@@ -28,10 +33,10 @@ public class WechatApiConfig {
 	private boolean encryptMsg = false;
 	private String encodingAesKey;
 	
-	public WechatApiConfig() {
+	public Config() {
 	}
 	
-	public WechatApiConfig(String token,String appId,String appSecret) {
+	public Config(String token,String appId,String appSecret) {
 		config(token, appId, appSecret);
 	}
 	
@@ -39,11 +44,11 @@ public class WechatApiConfig {
 		config(token, appId, appSecret, false, null);
 	}
 	
-	public WechatApiConfig(String token,String appId,String appSecret,boolean encryptMsg,String encodingAesKey) {
+	public Config(String token,String appId,String appSecret,boolean encryptMsg,String encodingAesKey) {
 		config(token, appId, appSecret, encryptMsg, encodingAesKey);
 	}
 	
-	public void config(String token,String appId,String appSecret,boolean encryptMsg,String encodingAesKey) {
+	public Config config(String token,String appId,String appSecret,boolean encryptMsg,String encodingAesKey) {
 		if(isBlank(token))
 			throw new IllegalArgumentException("token can not be null.");
 		this.token = token;
@@ -57,9 +62,10 @@ public class WechatApiConfig {
 		if(encryptMsg&&isBlank(encodingAesKey))
 			throw new IllegalArgumentException("encodingAesKey can not be null if encryptMsg=true.");
 		this.encodingAesKey = encodingAesKey;
+		return this;
 	}
 	
-	public void loadProperties(Properties properties) {
+	public Config loadProperties(Properties properties) {
 		if(properties==null)
 			throw new IllegalArgumentException("properties can not be null.");
 		String token = properties.getProperty("token");
@@ -76,14 +82,14 @@ public class WechatApiConfig {
 		String encodingAesKey = properties.getProperty("encodingAesKey");
 		if(encryptMsg&&isBlank(encodingAesKey))
 			throw new RuntimeException("encodingAesKey can not be null if you've set encryptMsg true");
-		config(token, appId, appSecret, encryptMsg, encodingAesKey);
+		return config(token, appId, appSecret, encryptMsg, encodingAesKey);
 	}
 	
-	public void loadPropertiesFile(String fileName) {
-		loadPropertiesFile(fileName, "UTF-8");
+	public Config loadPropertiesFile(String fileName) {
+		return loadPropertiesFile(fileName, "UTF-8");
 	}
 	
-	public void loadPropertiesFile(String fileName,String encoding) {
+	public Config loadPropertiesFile(String fileName,String encoding) {
 		Properties properties = null;
 		InputStream inputStream = null;
 		try {
@@ -98,7 +104,7 @@ public class WechatApiConfig {
 		finally {
 			if (inputStream != null) try {inputStream.close();} catch (IOException e) {e.printStackTrace();}
 		}
-		loadProperties(properties);
+		return loadProperties(properties);
 	}
 
 	private static boolean isBlank(String str) {
@@ -109,7 +115,7 @@ public class WechatApiConfig {
 		return token;
 	}
 
-	public WechatApiConfig setToken(String token) {
+	public Config setToken(String token) {
 		if(isBlank(token))
 			throw new IllegalArgumentException("token can not be blank.");
 		this.token = token;
@@ -120,7 +126,7 @@ public class WechatApiConfig {
 		return appId;
 	}
 
-	public WechatApiConfig setAppId(String appId) {
+	public Config setAppId(String appId) {
 		if(isBlank(appId))
 			throw new IllegalArgumentException("appId can not be blank.");
 		this.appId = appId;
@@ -131,7 +137,7 @@ public class WechatApiConfig {
 		return appSecret;
 	}
 
-	public WechatApiConfig setAppSecret(String appSecret) {
+	public Config setAppSecret(String appSecret) {
 		if(isBlank(appSecret))
 			throw new IllegalArgumentException("appSecret can not be blank.");
 		this.appSecret = appSecret;
@@ -142,7 +148,7 @@ public class WechatApiConfig {
 		return encryptMsg;
 	}
 
-	public WechatApiConfig setEncryptMsg(boolean encryptMsg) {
+	public Config setEncryptMsg(boolean encryptMsg) {
 		this.encryptMsg = encryptMsg;
 		return this;
 	}
@@ -151,7 +157,7 @@ public class WechatApiConfig {
 		return encodingAesKey;
 	}
 
-	public WechatApiConfig setEncodingAesKey(String encodingAesKey) {
+	public Config setEncodingAesKey(String encodingAesKey) {
 		if(encryptMsg&&isBlank(encodingAesKey))
 			throw new IllegalArgumentException("encodingAesKey can not be blank if encryptMsg is set true.");
 		this.encodingAesKey = encodingAesKey;

@@ -19,31 +19,31 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * ServiceContext
+ * WeChat service context.
  * @author 帮杰
  *
  */
 public class ServiceContext {
 
-	protected WechatApi wechatApi;
+	private Config config;
 	protected HttpServletRequest request;
 	protected HttpServletResponse response;
 	
 	public ServiceContext() {
 	}
 
-	public ServiceContext(WechatApi wechatApi,HttpServletRequest request,HttpServletResponse response) {
-		this.wechatApi = wechatApi;
+	public ServiceContext(Config config,HttpServletRequest request,HttpServletResponse response) {
+		this.config = config;
 		this.request = request;
 		this.response = response;
 	}
 	
-	public WechatApi getWechatApi() {
-		return wechatApi;
+	public Config getWechatApiConfig() {
+		return config;
 	}
 
-	void setWechatApi(WechatApi wechatApi) {
-		this.wechatApi = wechatApi;
+	void setWechatApiConfig(Config config) {
+		this.config = config;
 	}
 
 	public HttpServletRequest getRequest() {

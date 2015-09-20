@@ -1,7 +1,6 @@
 package com.wechat.msg.out;
 
-import com.wechat.msg.InMsg;
-import com.wechat.msg.OutMsg;
+import com.wechat.msg.in.InMsg;
 
 
 /**

@@ -15,9 +15,8 @@
  */
 package com.wechat.api;
 
-import com.wechat.access.AccessToken;
+import com.json.JsonObject;
 import com.wechat.util.http.ApiRequest;
-import com.wechat.util.json.JsonObject;
 
 /**
  * 全局属性：AccessToken的获取API
@@ -37,7 +36,7 @@ public class AccessTokenApi {
 	 */
 	public static AccessToken getAccessToken(String appId,String appSecret) {
 		String url = URL.replace("APPID", appId).replace("APPSECRET", appSecret);
-		JsonObject jsonObject = new ApiRequest(url).doGet().getResourceAsJsonObject();
+		JsonObject jsonObject = new ApiRequest(url).doGet().optJsonObject();
 		String access_token = jsonObject.getString("access_token");
 		Integer expires_in = jsonObject.getInteger("expires_in");
 		AccessToken accessToken = new AccessToken(access_token, expires_in);

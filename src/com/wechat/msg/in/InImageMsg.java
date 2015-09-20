@@ -2,8 +2,6 @@ package com.wechat.msg.in;
 
 import java.util.Map;
 
-import com.wechat.msg.InMsg;
-
 /**
 	接收图片消息
 	<xml>

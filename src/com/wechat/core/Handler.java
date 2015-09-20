@@ -15,9 +15,13 @@
  */
 package com.wechat.core;
 
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Map;
 
-import com.wechat.msg.OutMsg;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import com.wechat.msg.in.InImageMsg;
 import com.wechat.msg.in.InLinkMsg;
 import com.wechat.msg.in.InLocationMsg;
@@ -29,14 +33,16 @@ import com.wechat.msg.in.event.InFollowEvent;
 import com.wechat.msg.in.event.InLocationEvent;
 import com.wechat.msg.in.event.InMenuEvent;
 import com.wechat.msg.in.event.InQrCodeEvent;
+import com.wechat.msg.out.OutMsg;
+import com.wechat.util.EncryptUtil;
 import com.wechat.util.XmlUtil;
 
 /**
- * 微信消息（明文）处理器
+ * WeChat Handler.
  * @author 帮杰
  *
  */
-public abstract class WechatMsgHandler {
+public abstract class Handler {
 
 	public static final String IN_TEXT_MSG = "text";
 	public static final String IN_LINK_MSG = "link";
@@ -46,62 +52,95 @@ public abstract class WechatMsgHandler {
 	public static final String IN_VIDEO_MSG = "shortvideo";
 	public static final String IN_EVENT_MSG = "event";
 	
+	private String inXml;
+	private Map<String, String> inXmlMap;
 	private ServiceContext serviceContext;
 	
-	public WechatMsgHandler() {}
+	public Handler() {}
 	
-	public String handle(String inXml){
-		Map<String, String> xmlMap = XmlUtil.xmlToMap(inXml);
+	public void handle(ServiceContext serviceContext) throws IOException{
+		this.serviceContext = serviceContext;
+		HttpServletRequest request = serviceContext.getRequest();
+		HttpServletResponse response = serviceContext.getResponse();
+		String timestamp = request.getParameter("timestamp");
+		String nonce = request.getParameter("nonce");
+		String inXml = XmlUtil.read(request.getInputStream());
+		Config config = serviceContext.getWechatApiConfig();
+		inXml = config.encryptMsg()?EncryptUtil.decrypt(config.getToken(), config.getEncodingAesKey(), config.getAppId(), inXml, timestamp, nonce):inXml;
+		String outXml = handle(inXml);
+		outXml = config.encryptMsg()?EncryptUtil.encrypt(config.getToken(), config.getEncodingAesKey(), config.getAppId(), outXml, timestamp, nonce):outXml;
+		if (!response.isCommitted()) {
+			response.setContentType("text/xml");
+			PrintWriter writer = response.getWriter();
+			writer.write(outXml);
+			writer.flush();
+			writer.close();
+			writer = null;
+		}
+	}
+	
+	private String handle(String inXml) {
+		this.inXml = inXml;
+		try {
+			inXmlMap = XmlUtil.xmlToMap(inXml);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "";
+		}
 		OutMsg outMsg = null;
-		String msgType = xmlMap.get("MsgType");
+		String msgType = inXmlMap.get("MsgType");
 		if(msgType.equals(IN_TEXT_MSG)) {
-			InTextMsg inTextMsg = new InTextMsg(xmlMap);
+			InTextMsg inTextMsg = new InTextMsg(inXmlMap);
 			outMsg = handleInTextMsg(inTextMsg);
 		}else if(msgType.equals(IN_VOICE_MSG)) {
-			InVoiceMsg inVoiceMsg = new InVoiceMsg(xmlMap);
+			InVoiceMsg inVoiceMsg = new InVoiceMsg(inXmlMap);
 			outMsg = handleInVoiceMsg(inVoiceMsg);
 		}else if(msgType.equals(IN_IMAGE_MSG)) {
-			InImageMsg inImageMsg = new InImageMsg(xmlMap);
+			InImageMsg inImageMsg = new InImageMsg(inXmlMap);
 			outMsg = handleInImageMsg(inImageMsg);
 		}else if(msgType.equals(IN_VIDEO_MSG)) {
-			InVideoMsg inVideoMsg = new InVideoMsg(xmlMap);
+			InVideoMsg inVideoMsg = new InVideoMsg(inXmlMap);
 			outMsg = handleInVideoMsg(inVideoMsg);
 		}else if(msgType.equals(IN_LINK_MSG)) {
-			InLinkMsg inLinkMsg = new InLinkMsg(xmlMap);
+			InLinkMsg inLinkMsg = new InLinkMsg(inXmlMap);
 			outMsg = handleInLinkMsg(inLinkMsg);
 		}else if(msgType.equals(IN_LOCATION_MSG)) {
-			InLocationMsg inLocationMsg = new InLocationMsg(xmlMap);
+			InLocationMsg inLocationMsg = new InLocationMsg(inXmlMap);
 			outMsg = handleInLocationMsg(inLocationMsg);
 		}else if(msgType.equals(IN_EVENT_MSG)) {
-			InEvent inEvent = new InEvent(xmlMap);
+			InEvent inEvent = new InEvent(inXmlMap);
 			String event = inEvent.getEvent();
 			if(event.equalsIgnoreCase(InEvent.EVENT_SUBSCRIBE)||event.equalsIgnoreCase(InEvent.EVENT_UNSUBSCRIBE)) {
-				InFollowEvent inFollowEvent = new InFollowEvent(xmlMap);
+				InFollowEvent inFollowEvent = new InFollowEvent(inXmlMap);
 				outMsg = handleInFollowEvent(inFollowEvent);
 			}else if(event.equalsIgnoreCase(InEvent.EVENT_LOCATION)) {
-				InLocationEvent inLocationEvent = new InLocationEvent(xmlMap);
+				InLocationEvent inLocationEvent = new InLocationEvent(inXmlMap);
 				outMsg = handleInLocationEvent(inLocationEvent);
 			}else if(event.equalsIgnoreCase(InEvent.EVENT_CLICK)||event.equalsIgnoreCase(InEvent.EVENT_VIEW)) {
-				InMenuEvent inMenuEvent = new InMenuEvent(xmlMap);
+				InMenuEvent inMenuEvent = new InMenuEvent(inXmlMap);
 				outMsg = handleInMenuEvent(inMenuEvent);
 			}else if(event.equalsIgnoreCase(InEvent.EVENT_SCAN)) {
-				InQrCodeEvent inQrCodeEvent = new InQrCodeEvent(xmlMap);
+				InQrCodeEvent inQrCodeEvent = new InQrCodeEvent(inXmlMap);
 				outMsg = handleInQrCodeEvent(inQrCodeEvent);
 			}
 		}else {
-			System.err.println("WechatMsgHandler:Unrecognized msg type:"+inXml);
+			System.err.println("Handler:Unrecognized msg type:"+inXml);
 		}
 		
 		return outMsg==null?"":outMsg.toString();
 		
 	}
 	
-	public ServiceContext getServiceContext() {
-		return serviceContext;
+	public String getInXml() {
+		return inXml;
+	}
+	
+	public Map<String, String> getInXmlMap() {
+		return inXmlMap;
 	}
 
-	void setServiceContext(ServiceContext serviceContext) {
-		this.serviceContext = serviceContext;
+	public ServiceContext getServiceContext() {
+		return serviceContext;
 	}
 
 	protected abstract OutMsg handleInTextMsg(InTextMsg inTextMsg);

@@ -15,8 +15,8 @@
  */
 package com.wechat.api;
 
+import com.json.JsonObject;
 import com.wechat.util.http.ApiRequest;
-import com.wechat.util.json.JsonObject;
 
 /**
  * 自定义菜单相关API
@@ -32,21 +32,21 @@ public class MenuApi {
 	
 	public static JsonObject createMenu(String accessToken,String jsonMenu) {
 		String url = CREATE_MENU_URL.replace("ACCESS_TOKEN", accessToken);
-		return new ApiRequest(url).setOutData(jsonMenu.getBytes()).doPost().getResourceAsJsonObject();
+		return new ApiRequest(url).setOutData(jsonMenu.getBytes()).doPost().optJsonObject();
 	}
 
 	public static JsonObject getMenu(String accessToken) {
 		String url = GET_MENU_URL.replace("ACCESS_TOKEN", accessToken);
-		return new ApiRequest(url).doGet().getResourceAsJsonObject();
+		return new ApiRequest(url).doGet().optJsonObject();
 	}
 	
 	public static JsonObject deleteMenu(String accessToken) {
 		String url = DELETE_MENU_URL.replace("ACCESS_TOKEN", accessToken);
-		return new ApiRequest(url).doGet().getResourceAsJsonObject();
+		return new ApiRequest(url).doGet().optJsonObject();
 	}
 	
 	public static JsonObject getMenuConfig(String accessToken) {
 		String url = GET_MENU_CONFIG_URL.replace("ACCESS_TOKEN", accessToken);
-		return new ApiRequest(url).doGet().getResourceAsJsonObject();
+		return new ApiRequest(url).doGet().optJsonObject();
 	}
 }

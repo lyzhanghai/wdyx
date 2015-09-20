@@ -13,33 +13,45 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.wechat.access;
+package com.wechat.ext;
 
-import com.wechat.api.AccessTokenApi;
+
 
 /**
- * LocalAccessTokenMgr
+ * AccessTokenMgr.
  * @author 帮杰
  *
  */
-public class LocalAccessTokenMgr extends AccessTokenMgr {
-
-	private AccessToken accessToken;
+public abstract class AccessTokenMgr {
 	
-	public LocalAccessTokenMgr() {
-		super();
-	}
-
-	public LocalAccessTokenMgr(String appId,String appSecret) {
-		super(appId, appSecret);
+	protected String appId;
+	protected String appSecret;
+	
+	public AccessTokenMgr(){
+		
 	}
 	
-	@Override
-	public String getAccessToken() {
-		if (accessToken==null||accessToken.isExpired()) {
-			accessToken = AccessTokenApi.getAccessToken(appId, appSecret);
-		}
-		return accessToken.toString();
+	public AccessTokenMgr(String appId,String appSecret) {
+		this.appId = appId;
+		this.appSecret = appSecret;
+	}
+	
+	public abstract String getAccessToken();
+
+	public String getAppId() {
+		return appId;
 	}
 
+	public void setAppId(String appId) {
+		this.appId = appId;
+	}
+
+	public String getAppSecret() {
+		return appSecret;
+	}
+
+	public void setAppSecret(String appSecret) {
+		this.appSecret = appSecret;
+	}
+	
 }

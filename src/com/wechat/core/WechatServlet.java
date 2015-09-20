@@ -28,41 +28,33 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class WechatServlet extends HttpServlet {
 	
-	private static final long serialVersionUID = 1000100100100122L;
-    
-	private WechatApi wechatApi;
+	private static final long serialVersionUID = -8195572683456030614L;
 	
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
+	private Api api;
+	
     public WechatServlet() {
         super();
     }
 
 	@Override
     public void init(ServletConfig config) throws ServletException {
-    	String apiClass = config.getInitParameter("WechatApi");
+    	String apiClass = config.getInitParameter("ApiClass");
     	try {
-    		wechatApi = (WechatApi) Class.forName(apiClass).newInstance();
+    		api = (Api) Class.forName(apiClass).newInstance();
 		} catch (Exception e) {
-			throw new RuntimeException("Could not init WechatApi '"+apiClass+"'.Cause:"+e);
+			e.printStackTrace();
+			throw new RuntimeException("Could not init ApiClass '"+apiClass+"'.Cause:"+e);
 		}
-    	
     }
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
+	
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		wechatApi.doHandshake(request, response);
+		api.doHandshake(request, response);
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		wechatApi.doService(request, response);
+		api.doService(request, response);
 	}
 
 }

@@ -13,45 +13,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.wechat.access;
+package com.wechat.test;
 
-
+import com.wechat.core.Api;
+import com.wechat.core.Config;
+import com.wechat.core.Handler;
 
 /**
- * AccessTokenMgr.
+ * WechatApi
  * @author 帮杰
  *
  */
-public abstract class AccessTokenMgr {
+public class WechatApi extends Api {
 	
-	protected String appId;
-	protected String appSecret;
+	public static final Config CONFIG = new Config().loadPropertiesFile("wechat.properties");
+	public static final Handler HANDLER = new WechatHandler();
 	
-	public AccessTokenMgr(){
-		
+	@Override
+	protected Config getConfig() {
+		return CONFIG;
 	}
 	
-	public AccessTokenMgr(String appId,String appSecret) {
-		this.appId = appId;
-		this.appSecret = appSecret;
-	}
-	
-	public abstract String getAccessToken();
-
-	public String getAppId() {
-		return appId;
+	@Override
+	protected Handler getHandler() {
+		return HANDLER;
 	}
 
-	public void setAppId(String appId) {
-		this.appId = appId;
-	}
 
-	public String getAppSecret() {
-		return appSecret;
-	}
-
-	public void setAppSecret(String appSecret) {
-		this.appSecret = appSecret;
-	}
-	
 }

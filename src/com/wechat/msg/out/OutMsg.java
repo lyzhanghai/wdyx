@@ -1,11 +1,6 @@
-package com.wechat.msg;
+package com.wechat.msg.out;
 
-import com.wechat.msg.out.OutImageMsg;
-import com.wechat.msg.out.OutMusicMsg;
-import com.wechat.msg.out.OutNewsMsg;
-import com.wechat.msg.out.OutTextMsg;
-import com.wechat.msg.out.OutVideoMsg;
-import com.wechat.msg.out.OutVoiceMsg;
+import com.wechat.msg.in.InMsg;
 
 
 
