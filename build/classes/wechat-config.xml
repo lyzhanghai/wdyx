@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wechat-config>
+	<wechat-project name="wdyx">
+		<token>wudayixie</token>
+		<appId>wx1129e35166c74f7f</appId>
+		<appSecret>43137734b40fe457bcac5db164947ec3</appSecret>
+		<encryptMsg>false</encryptMsg>
+		<encodingAesKey>YDBKYZWYHvdgyQAoFbXQBn2LTHl8MomfNrWqaMq2iI4</encodingAesKey>
+		<handler>com.wdyx.weixin.handler.WeChatMsgHandler</handler>
+		<url>/wdyx/wechat</url>
+	</wechat-project>
+	<wechat-project name="haomama">
+		<token>haomama</token>
+		<appId>wx1129e35166c74f7f</appId>
+		<appSecret>43137734b40fe457bcac5db164947ec3</appSecret>
+		<encryptMsg>false</encryptMsg>
+		<encodingAesKey>YDBKYZWYHvdgyQAoFbXQBn2LTHl8MomfNrWqaMq2iI4</encodingAesKey>
+		<handler>com.wdyx.weixin.handler.WeChatMsgHandler</handler>
+		<url>/haomama/wechat</url>
+	</wechat-project>
+</wechat-config>

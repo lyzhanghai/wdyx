@@ -1,0 +1,2 @@
+BASE_WEB_VIEW_PIC_URL = http://7xi8nh.com1.z0.glb.clouddn.com/webview/
+BASE_WEB_ITEM_PIC_URL = http://7xi8nh.com1.z0.glb.clouddn.com/webitem/

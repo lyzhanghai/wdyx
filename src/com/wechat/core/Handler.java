@@ -64,7 +64,7 @@ public abstract class Handler {
 		HttpServletResponse response = serviceContext.getResponse();
 		String timestamp = request.getParameter("timestamp");
 		String nonce = request.getParameter("nonce");
-		String inXml = XmlUtil.read(request.getInputStream());
+		inXml = XmlUtil.read(request.getInputStream());
 		Config config = serviceContext.getWechatApiConfig();
 		inXml = config.encryptMsg()?EncryptUtil.decrypt(config.getToken(), config.getEncodingAesKey(), config.getAppId(), inXml, timestamp, nonce):inXml;
 		String outXml = handle(inXml);
@@ -80,7 +80,6 @@ public abstract class Handler {
 	}
 	
 	private String handle(String inXml) {
-		this.inXml = inXml;
 		try {
 			inXmlMap = XmlUtil.xmlToMap(inXml);
 		} catch (Exception e) {

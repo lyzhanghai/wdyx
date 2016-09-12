@@ -43,7 +43,7 @@ public class WechatServlet extends HttpServlet {
     		api = (Api) Class.forName(apiClass).newInstance();
 		} catch (Exception e) {
 			e.printStackTrace();
-			throw new RuntimeException("Could not init ApiClass '"+apiClass+"'.Cause:"+e);
+			throw new RuntimeException("WechatServlet：Could not init ApiClass '"+apiClass+"'.Cause:"+e);
 		}
     }
 	
